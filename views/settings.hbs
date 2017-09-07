@@ -1,0 +1,170 @@
+<div id="myModal" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Errors</h4>
+      </div>
+      <div class="modal-body">
+        <p>The following errors appear in the configuration:</p>
+        <p>Error 1</p>
+        <p>Error 2</p>
+        <p>Error 3</p>
+        <p class="text-warning"><small>You can't save an incorrect configuration.</small></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $(function () {
+    // $('#myModal').modal('show');
+  });
+</script>
+<div class="container">
+  <h1></h1>
+  <div class="row">
+    <div class="col-md-9">
+      <div class="margins">
+        <form class="form-horizontal" id="settings-form">
+          <h3>Data Configuration</h3>
+          <div class="form-group">
+            <label for="bw-dir" class="col-sm-2 control-label">BigWig Source</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="bw-dir" name="bwsource" placeholder="/" value="/">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <div class="checkbox">
+                <label>
+                  <input name="bwusehost" type="checkbox">
+                  Source is a url (not a directory).
+                </label>
+              </div>
+            </div>
+          </div>
+          <h3>Sequences Configuration</h3>
+          <ul class="nav nav-tabs">
+            <li id="csv-nav-tab" class="active">
+              <a data-toggle="tab" href="#csv-group">CSV</a>
+            </li>
+            <li id="mysql-nav-tab">
+              <a data-toggle="tab" href="#mysql-group">MySQL</a>
+            </li>
+            <!-- <li><a data-toggle="tab" href="#menu2">Menu 2</a></li>
+            <li><a data-toggle="tab" href="#menu3">Menu 3</a></li> -->
+          </ul>
+          <div class="tab-content padding">
+            <div class="tab-pane fade in active" id="csv-group">
+              <div class="form-group">
+                <label for="csv-path" class="col-sm-2 control-label">CSV Path</label>
+                <div class="col-sm-10">
+                  <input type="text"
+                         class="form-control"
+                         id="csv-path"
+                         name="csvpath"
+                         placeholder="/path/to/file or ./filename">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="csv-path" class="col-sm-2 control-label">CSV Column</label>
+                <div class="col-sm-10">
+                  <input type="text"
+                         class="form-control"
+                         id="csv-path"
+                         name="csvpath"
+                         placeholder="/path/to/file or ./filename">
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                  <div class="checkbox">
+                    <label>
+                      <input name="csvuseindex" type="checkbox">
+                      CSV has headers (else use col. number)
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane fade" id="mysql-group">
+              <div class="form-group">
+                <label for="mysql-dbname"
+                       class="col-sm-2 control-label">Database Name</label>
+                <div class="col-sm-10">
+                  <input type="text"
+                         class="form-control"
+                         id="mysql-dbname"
+                         name="dbname"
+                         placeholder="sequences_db">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="mysql-dbuser"
+                       class="col-sm-2 control-label">Database Username</label>
+                <div class="col-sm-10">
+                  <input type="text"
+                         class="form-control"
+                         id="mysql-dbuser"
+                         name="dbuser"
+                         placeholder="user">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="mysql-dbuser"
+                       class="col-sm-2 control-label">Database Password</label>
+                <div class="col-sm-10">
+                  <input type="password"
+                         class="form-control"
+                         id="mysql-dbuser"
+                         name="dbpass"
+                         placeholder="pwd">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="mysql-dbhost"
+                       class="col-sm-2 control-label">Database Host</label>
+                <div class="col-sm-10">
+                  <input type="text"
+                         class="form-control"
+                         id="mysql-dbhost"
+                         name="dbhost"
+                         placeholder="127.0.0.1"
+                         value="127.0.0.1">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <div class="checkbox">
+                <label>
+                  <input name="optionbackup" type="checkbox"> Back up old settings
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <button type="submit" class="btn btn-default">Preview Configuration</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="margins">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <textarea id="configuration-preview" rows="10"></textarea>
+            <p></p>
+            <button id="save" class="btn btn-default">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

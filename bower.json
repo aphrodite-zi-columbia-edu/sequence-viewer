@@ -1,0 +1,17 @@
+{
+  "name": "sequence-viewer-command",
+  "description": "",
+  "main": "",
+  "authors": [
+    "Dave Ankin <alexanderankin@gmail.com>"
+  ],
+  "license": "ISC",
+  "homepage": "",
+  "private": true,
+  "dependencies": {
+    "datatables.net": "1.10.15",
+    "datatables.net-bs": "2.1.1",
+    "bootstrap": "3.3.6",
+    "datatables.net-dt": "^3.2.2"
+  }
+}
