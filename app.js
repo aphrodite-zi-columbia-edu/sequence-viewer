@@ -6,12 +6,13 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
-var users = require('./routes/users');
+var api = require('./routes/api');
 
 var app = express();
+var exphbs  = require('express-handlebars');
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
+app.engine('hbs', exphbs({ defaultLayout: 'layout.hbs' }));
 app.set('view engine', 'hbs');
 
 // uncomment after placing your favicon in /public
@@ -23,7 +24,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
-app.use('/users', users);
+app.use('/api', api);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
