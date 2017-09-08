@@ -5,7 +5,7 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
   res.render('index', {
     title:   'Sequence Viewer',
-    scripts: [/*'<script src="javascripts/example"></script>',*/],
+    scripts: [/*'<script src="/javascripts/example"></script>',*/],
     styles:  [/*'<link rel="stylesheet" href="/components/example.css">',*/]
   });
 });
@@ -20,10 +20,7 @@ router.get('/settings', function(req, res, next) {
     ],
     styles: [
       '<link rel="stylesheet" href="/components/bootstrap/dist/css/bootstrap.css">',
-      `<style>
-        .margins { margin: 30px; } .padding { padding: 20px; }
-        #type-selector { margin: 15px auto 35px auto; }
-      </style>`
+      '<link rel="stylesheet" href="/stylesheets/settings.css">'
     ]
   });
 });
