@@ -11,50 +11,66 @@ $(function() { //shorthand document.ready function
     alert("Returned to callback");
   }));
 
+  preview();
   $('#settings-form').on('submit', function(e) { //use on if jQuery 1.7+
     e.preventDefault();  //prevent form from submitting
-    var data = $("#settings-form :input").serializeArray();
-
-    $('#configuration-preview').val(JSON.stringify(formatFields(data), null, 2));
-    // console.log(JSON.stringify(formatFields(data), null, 2));
+    preview();
   });
 });
 
+/**
+ * Takes the fields on the left and puts them in the box on the right
+ * 
+ * Depends on the form being #settings-form
+ * Depends on the text being #configuration-preview
+ */
+function preview() {
+  var data = $("#settings-form :input").serializeArray();
+
+  var stringified = JSON.stringify(formatFields(data), function (key, value) {
+    // if (!value) return null; return value;
+    // if (!value) return console.log(value), null; return value;
+    if (typeof value === 'undefined') return "undefined";
+    if (!value && typeof value === 'boolean') return "false";
+    if (!value) return null;
+    return value;
+  }, 2);
+
+  $('#configuration-preview').val(stringified);
+}
+
 function formatFields(data) {
-  var config = data.reduce(function(obj, el) {
+  var formOptions = data.reduce(function(obj, el) {
     obj[el.name] = el.value;
     return obj;
   }, {});
 
-  var typesOfConfigs = {
-    'csv': {
-      'sequenceConfig': {
-        'csv': {
-          'path': config.csvpath, 'index': config.csvuseindex
-        }
-      },
-      'bigWigConfig': {
-        'config': config.bwsource, 'folder': config.bwusehost
-      },
-      'basetracks': config.basetracks,
-      'backup': config.optionbackup
-    },
-    'mysql': {
-      'sequenceConfig': {
-        'mysql': {
-          host: config.dbhost,
-          name: config.dbname,
-          user: config.dbuser,
-          pass: config.dbpass
-        }
-      },
-      'bigWigConfig': {
-        'config': config.bwsource, 'folder': config.bwusehost
-      },
-      'basetracks': config.basetracks,
-      'backup': config.optionbackup
-    }
+  // console.log(formOptions);
+
+  var config = {
+    sequenceConfig: {},
+    bigWigConfig: {},
+    basetracks: [],
+    backup: formOptions.optionbackup === "on" || false
+  };
+
+  switch (which) {
+    case 'csv':
+      config.sequenceConfig.csv = {
+        'path': config.csvpath,
+        'column': config.csvcolumn,
+        'index': config.csvuseindex === "on" || false
+      };
+      break;
+    case 'mysql':
+      config.sequenceConfig.mysql = {
+        host: config.dbhost,
+        name: config.dbname,
+        user: config.dbuser,
+        pass: config.dbpass        
+      };
+      break;
   }
 
-  return typesOfConfigs[which];
+  return config;
 }
