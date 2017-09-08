@@ -1,4 +1,4 @@
-<div id="myModal" class="modal fade">
+<div id="validation-errors" class="modal fade">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -20,29 +20,59 @@
 </div>
 <script>
   $(function () {
-    // $('#myModal').modal('show');
+    // $('#validation-errors').modal('show');
   });
 </script>
 <div class="container">
   <h1>Settings</h1>
+  <script>
+      // $('#success-disappear').fadeOut();
+    // setTimeout(function() {
+    //   $('#success-disappear').fadeOut();
+
+    //   setTimeout(function() {
+    //     $('#success-disappear').remove();
+    //   }, 1000);
+
+    // }, 1000);
+  </script>
+
+  <div id="success-disappear" class="alert alert-success alert-dismissable fade start-faded-out">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>Validation Success!</strong> Valid Configuration
+  </div>
+
+
   <div class="row">
     <div class="col-md-9">
       <div class="margins">
         <form class="form-horizontal" id="settings-form">
           <h3>Data Configuration</h3>
-          <div class="form-group">
-            <label for="bw-dir" class="col-sm-2 control-label">BigWig Source</label>
-            <div class="col-sm-10">
-              <input type="text" class="form-control" id="bw-dir" name="bwsource" placeholder="/media/storageA/mm10-data/bigwig">
+          <ul class="nav nav-tabs">
+            <li id="folder-nav-tab" class="active">
+              <a data-toggle="tab" href="#folder-group">Folder</a>
+            </li>
+            <li id="url-nav-tab">
+              <a data-toggle="tab" href="#url-group">Url (hosting)</a>
+            </li>
+          </ul>
+          <div class="tab-content padding">
+            <div class="tab-pane fade in active" id="folder-group">
+              <div class="form-group">
+                <label for="bw-dir" class="col-sm-2 control-label">BigWig Folder</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="bw-dir" name="bwdir" placeholder="/media/storageA/mm10-data/bigwig">
+                </div>
+              </div>
             </div>
           </div>
-          <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-              <div class="checkbox">
-                <label>
-                  <input name="bwusehost" type="checkbox">
-                  Source is a url (not a directory).
-                </label>
+          <div class="tab-content padding">
+            <div class="tab-pane fade" id="url-group">
+              <div class="form-group">
+                <label for="bw-dir" class="col-sm-2 control-label">BigWig Hosted Url</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="bw-url" name="bwurl" placeholder="https://aphrodite.zi.columbia.edu:3005/">
+                </div>
               </div>
             </div>
           </div>
@@ -158,7 +188,7 @@
     <div class="col-md-3">
       <div class="panel panel-default">
         <div class="panel-body">
-          <textarea id="configuration-preview" rows="10"></textarea>
+          <textarea class="form-control" id="configuration-preview" rows="20"></textarea>
           <p></p>
           <button id="save" class="btn btn-default">Save</button>
         </div>

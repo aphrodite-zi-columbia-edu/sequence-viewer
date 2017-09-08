@@ -1,3 +1,9 @@
 .margins { margin: 30px; }
 .padding { padding: 20px; }
 #type-selector { margin: 15px auto 35px auto; }
+
+.start-faded-out {
+  display: none;
+  opacity: 0.0;
+  filter: alpha(opacity=0);
+}
