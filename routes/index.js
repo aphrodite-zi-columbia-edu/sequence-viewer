@@ -5,8 +5,13 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
   res.render('index', {
     title:   'Sequence Viewer',
-    scripts: [/*'<script src="/javascripts/example"></script>',*/],
-    styles:  [/*'<link rel="stylesheet" href="/components/example.css">',*/]
+    scripts: [/*'<script src="/javascripts/example"></script>',*/
+      '<script src="/components/jquery/dist/jquery.js"></script>',
+      '<script src="/components/bootstrap/dist/js/bootstrap.js"></script>',
+    ],
+    styles:  [/*'<link rel="stylesheet" href="/components/example.css">',*/,
+      '<link rel="stylesheet" href="/components/bootstrap/dist/css/bootstrap.css">',
+    ]
   });
 });
 

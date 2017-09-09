@@ -14,6 +14,7 @@ var exphbs  = require('express-handlebars');
 // view engine setup
 app.engine('hbs', exphbs({ defaultLayout: 'layout.hbs', extname: '.hbs' }));
 app.set('view engine', 'hbs');
+app.locals.title = 'Sequence Viewer';
 
 // uncomment after placing your favicon in /public
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
