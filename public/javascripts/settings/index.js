@@ -95,9 +95,14 @@ function validate(configuration, doModal, callback) {
 function reportValidity(data) {
   if (!data.valid) {
     $("#validation-errors .modal-body").empty();
+    $("#validation-errors .modal-body").append(
+      $('<p>The following errors appear in the configuration:</p>')
+    );
+
     (data.errors || []).forEach(function (error) {
       $("#validation-errors .modal-body").append($('<p>' + error + '</p>'));
     });
+
     var warning = '<p class="text-warning"><small>You can\'t save an'
       + 'incorrect configuration.</small></p>';
     $("#validation-errors .modal-body").append($(warning));
