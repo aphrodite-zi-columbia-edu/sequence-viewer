@@ -82,17 +82,7 @@ router.get('/home', function (req, res, next) {
   });
 });
 
-router.get('/settings', function(req, res, next) {
-  res.render('settings', {
-    title: 'Sequence Viewer Settings',
-    bootstrap: true,
-    styles: [
-      '<link rel="stylesheet" href="/stylesheets/settings.css" />'
-    ],
-    scripts: [
-      '<script src="/javascripts/settings/index.js"></script>'
-    ]
-  });
-});
+router.use('/settings', require('./settings'));
+router.use('/viewer', require('./viewer'));
 
 module.exports = router;
