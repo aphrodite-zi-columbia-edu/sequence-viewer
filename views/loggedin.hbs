@@ -1,6 +1,8 @@
 <h1>{{title}}</h1>
 <p>Welcome to {{title}}</p>
-
+{{#if user}}
+<p>Welcome, {{user}}.</p>
+{{/if}}
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-6">

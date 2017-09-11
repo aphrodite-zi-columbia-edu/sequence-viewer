@@ -3,39 +3,27 @@ var router = express.Router();
 
 var state = require('../lib/state').state;
 
+router.all('/', function (req, res, next) {
+  if (req.signedCookies.labUser) return res.redirect('/home'); next();
+});
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   if (state.hasAuthSetup()) {
     res.render('login', {
       needsUsername: state.hasRoot(),
-      scripts: [/*'<script src="/javascripts/example"></script>',*/
-        '<script src="/components/jquery/dist/jquery.js"></script>',
-        '<script src="/components/bootstrap/dist/js/bootstrap.js"></script>',
-      ],
-      styles:  [/*'<link rel="stylesheet" href="/components/example.css">',*/,
-        '<link rel="stylesheet" href="/components/bootstrap/dist/css/bootstrap.css">',
-      ]
+      bootstrap: true,
+      error: req.query.err ? 'Incorrect credentials' : false
     })
   }
 
   else {
-    res.render('initial-setup', {
-      scripts: [
-        '<script src="/components/jquery/dist/jquery.js"></script>',
-        '<script src="/components/bootstrap/dist/js/bootstrap.js"></script>',
-      ],
-      styles: ['<link rel="stylesheet" href="/components/bootstrap/dist/css/bootstrap.css">']
-    });
+    res.render('initial-setup', { bootstrap: true });
   }
   // res.render('index', {
   //   title:   'Sequence Viewer',
-  //   scripts: [/*'<script src="/javascripts/example"></script>',*/
-  //     '<script src="/components/jquery/dist/jquery.js"></script>',
-  //     '<script src="/components/bootstrap/dist/js/bootstrap.js"></script>',
-  //   ],
-  //   styles:  [/*'<link rel="stylesheet" href="/components/example.css">',*/,
-  //     '<link rel="stylesheet" href="/components/bootstrap/dist/css/bootstrap.css">',
-  //   ]
+  //   scripts: [/*'<script src="/javascripts/example"></script>',*/],
+  //   styles:  [/*'<link rel="stylesheet" href="/components/example.css">',*/]
   // });
 });
 
@@ -47,49 +35,62 @@ router.post('/initialsetup', function (req, res, next) {
     }
 
     else
-      res.render('initial-setup', {
-        scripts: [
-          '<script src="/components/jquery/dist/jquery.js"></script>',
-          '<script src="/components/bootstrap/dist/js/bootstrap.js"></script>',
-        ],
-        styles: ['<link rel="stylesheet" href="/components/bootstrap/dist/css/bootstrap.css">']
-      });
+      res.render('initial-setup', { bootstrap: true });
   }
   else
     return next(new Error("Can't set up the one time password twice."));
-})
+});
 
 router.post('/', function (req, res, next) {
   var authFn = state.getAuthFn();
   if (typeof authFn !== 'function') return res.redirect('/');
+
   authFn(req.body.username, req.body.password, function (valid) {
-    if (valid)
-      res.render('loggedin', {
-        scripts: [
-          '<script src="/components/jquery/dist/jquery.js"></script>',
-          '<script src="/components/bootstrap/dist/js/bootstrap.js"></script>',
-        ],
-        styles:  [
-          '<link rel="stylesheet" href="/components/bootstrap/dist/css/bootstrap.css">',
-        ]
+    if (valid) {
+      // log you in for a week
+      res.cookie('labUser', req.body.username || true, {
+        domain: req.hostname,
+        maxAge: 1000 * 60 * 60 * 24 * 7,
+        httpOnly: true,
+        // secure: true,
+        signed: true
       });
+      res.redirect('/home');
+    }
 
     else
-      res.redirect('/');
-  })
+      res.redirect('/?err=true');
+  });
+});
+
+router.use(function (req, res, next) {
+  console.log("middleware check session:", req.signedCookies.labUser)
+  if (req.signedCookies.labUser) {
+    return next();
+  } else {
+    return res.redirect('/');
+    console.log("someone cant get past middleware");
+    res.end();
+  }
 })
+
+router.get('/home', function (req, res, next) {
+  res.render('loggedin', {
+    bootstrap: true,
+    styles: ['<link rel="stylesheet" href="/stylesheets/home.css" />'],
+    user: state.hasRoot() ? req.signedCookies.labUser : false
+  });
+});
 
 router.get('/settings', function(req, res, next) {
   res.render('settings', {
     title: 'Sequence Viewer Settings',
-    scripts: [
-      '<script src="/components/jquery/dist/jquery.js"></script>',
-      '<script src="/components/bootstrap/dist/js/bootstrap.js"></script>',
-      '<script src="/javascripts/settings/index.js"></script>'
-    ],
+    bootstrap: true,
     styles: [
-      '<link rel="stylesheet" href="/components/bootstrap/dist/css/bootstrap.css">',
-      '<link rel="stylesheet" href="/stylesheets/settings.css">'
+      '<link rel="stylesheet" href="/stylesheets/settings.css" />'
+    ],
+    scripts: [
+      '<script src="/javascripts/settings/index.js"></script>'
     ]
   });
 });

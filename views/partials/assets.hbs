@@ -2,6 +2,12 @@
 <link rel="stylesheet" href="/components/datatables.net-bs/css/dataTables.bootstrap.css">
 <link rel="stylesheet" href="/components/datatables.net-dt/css/jquery.dataTables.css"> -->
 
+{{#if bootstrap}}
+<link rel="stylesheet" href="/components/bootstrap/dist/css/bootstrap.css">
+<script src="/components/jquery/dist/jquery.js"></script>
+<script src="/components/bootstrap/dist/js/bootstrap.js"></script>
+{{/if}}
+
 {{#each styles}}
   {{{ this }}}
 {{/each}}
