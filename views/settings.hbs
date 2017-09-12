@@ -47,8 +47,14 @@
     <div class="col-md-9">
       <div class="margins">
         <form class="form-horizontal" id="settings-form">
+          <div class="form-group">
+            <label for="reset-password" class="col-sm-2 control-label">Reset Password</label>
+            <div class="col-sm-10">
+              <input type="password" class="form-control" id="reset-password" name="resetpassword" disabled="true"  placeholder="(feature coming soon)">
+            </div>
+          </div>
           <h3>Data Configuration</h3>
-          <ul class="nav nav-tabs">
+          <ul class="nav nav-tabs" id="data-conf-tab-list" data-tabs="tabs">
             <li id="folder-nav-tab" class="active">
               <a data-toggle="tab" href="#folder-group">Folder</a>
             </li>
@@ -61,17 +67,23 @@
               <div class="form-group">
                 <label for="bw-dir" class="col-sm-2 control-label">BigWig Folder</label>
                 <div class="col-sm-10">
+                {{#if previous.bwdir}}
+                  <input type="text" class="form-control" id="bw-dir" name="bwdir" value="{{previous.bwdir}}">
+                {{else}}
                   <input type="text" class="form-control" id="bw-dir" name="bwdir" placeholder="/media/storageA/mm10-data/bigwig">
+                {{/if}}
                 </div>
               </div>
             </div>
-          </div>
-          <div class="tab-content padding">
             <div class="tab-pane fade" id="url-group">
               <div class="form-group">
                 <label for="bw-dir" class="col-sm-2 control-label">BigWig Hosted Url</label>
                 <div class="col-sm-10">
+                {{#if previous.bwurl}}
+                  <input type="text" class="form-control" id="bw-url" name="bwurl" value="{{previous.bwurl}}">
+                {{else}}
                   <input type="text" class="form-control" id="bw-url" name="bwurl" placeholder="https://aphrodite.zi.columbia.edu:3005/">
+                {{/if}}
                 </div>
               </div>
             </div>

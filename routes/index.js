@@ -64,6 +64,7 @@ router.post('/', function (req, res, next) {
 });
 
 router.use(function (req, res, next) {
+  return next();
   console.log("middleware check session:", req.signedCookies.labUser)
   if (req.signedCookies.labUser) {
     return next();

@@ -11,6 +11,7 @@ function makeWhichTab(tabs) {
       $(tabid).on('click', function () {
         // console.log
         set(tabs[tabid].value);
+        return true;
       })
     }
   })
