@@ -108,6 +108,9 @@
                          class="form-control"
                          id="csv-path"
                          name="csvpath"
+                         {{#if previous.csvpath}}
+                         value="{{previous.csvpath}}"
+                         {{/if}}
                          placeholder="/path/to/file or ./filename">
                 </div>
               </div>
@@ -118,6 +121,9 @@
                          class="form-control"
                          id="csv-path"
                          name="csvcolumn"
+                         {{#if previous.csvcolumn}}
+                         value="{{previous.csvcolumn}}"
+                         {{/if}}
                          placeholder="1 or 2 or files or bwfiles">
                 </div>
               </div>
@@ -125,7 +131,7 @@
                 <div class="col-sm-offset-2 col-sm-10">
                   <div class="checkbox">
                     <label>
-                      <input name="csvuseindex" type="checkbox">
+                      <input name="csvuseindex" type="checkbox" {{#if previous.csvuseindex}}value="on" {{/if}}/>
                       CSV has headers (else use col. number)
                     </label>
                   </div>
@@ -141,6 +147,9 @@
                          class="form-control"
                          id="mysql-dbname"
                          name="dbname"
+                         {{#if previous.dbname}}
+                         value="{{previous.dbname}}" 
+                         {{/if}}
                          placeholder="sequences_db">
                 </div>
               </div>
@@ -152,6 +161,9 @@
                          class="form-control"
                          id="mysql-dbuser"
                          name="dbuser"
+                         {{#if previous.dbuser}}
+                         value="{{previous.dbuser}}" 
+                         {{/if}}
                          placeholder="user">
                 </div>
               </div>
@@ -163,6 +175,9 @@
                          class="form-control"
                          id="mysql-dbuser"
                          name="dbpass"
+                         {{#if previous.dbpass}}
+                         value="{{previous.dbpass}}" 
+                         {{/if}}
                          placeholder="pwd">
                 </div>
               </div>
@@ -174,21 +189,35 @@
                          class="form-control"
                          id="mysql-dbhost"
                          name="dbhost"
+                         {{#if previous.dbhost}}
+                         value="{{previous.dbhost}}"
+                         {{else}}
+                         value="127.0.0.1"
+                         {{/if}}
                          placeholder="127.0.0.1"
-                         value="127.0.0.1">
+                         >
                 </div>
               </div>
             </div>
           </div>
+          {{!-- hide unimplemented stuff --}}
+          {{#if false}}
           <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
               <div class="checkbox">
                 <label>
-                  <input name="optionbackup" type="checkbox"> Back up old settings
+                  <input name="optionbackup" type="checkbox"
+                  {{#if previous.nooptionbackup}}
+                  {{else}}
+                  value="on"
+                  {{/if}}
+                  >
+                  Back up old settings
                 </label>
               </div>
             </div>
           </div>
+          {{/if}}
           <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
               <button type="submit" class="btn btn-default">Preview Configuration</button>

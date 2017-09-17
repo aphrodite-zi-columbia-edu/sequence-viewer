@@ -12,7 +12,16 @@ var app = express();
 var exphbs  = require('express-handlebars');
 
 // view engine setup
-app.engine('hbs', exphbs({ defaultLayout: 'layout.hbs', extname: '.hbs' }));
+app.engine('hbs', exphbs({
+  // handlebars     : Handlebars,
+  extname: '.hbs',
+  layoutsDir     : path.join(__dirname, 'views', 'layouts'),
+  partialsDir    : path.join(__dirname, 'views', 'partials'),
+  defaultLayout  : path.join(__dirname, 'views', 'layouts', 'layout.hbs'),
+  helpers        : undefined,
+  compilerOptions: undefined
+}));
+app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 app.locals.title = 'Sequence Viewer';
 
@@ -20,7 +29,7 @@ app.locals.title = 'Sequence Viewer';
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser(require('crypto').randomBytes(64).toString('hex')));
 app.use(express.static(path.join(__dirname, 'public')));
 

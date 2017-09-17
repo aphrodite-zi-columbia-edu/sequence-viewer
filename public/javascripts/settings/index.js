@@ -30,15 +30,45 @@ var whichSequenceSource = makeWhichTab({
   '#mysql-nav-tab': { value: 'mysql' }
 });
 
+function doPost(path, params, method) {
+  method = method || "post"; // Set method to post by default if not specified.
 
-function upload(callback) {
-  console.log(formatFields($("#settings-form :input").serializeArray()));
-  var data = formatFields($("#settings-form :input").serializeArray());
-  // $.post('/api/configvalid', data, function (data, status, jQXHR) {
-    
-  //   callback();
-  // })
-  callback();
+  // The rest of this code assumes you are not using a library.
+  // It can be made less wordy if you use one.
+  var form = document.createElement("form");
+  form.setAttribute("method", method);
+  form.setAttribute("action", path);
+
+  for (var key in params) {
+    if (params.hasOwnProperty(key)) {
+      var hiddenField = document.createElement("input");
+      hiddenField.setAttribute("type", "hidden");
+      hiddenField.setAttribute("name", key);
+      hiddenField.setAttribute("value", params[key]);
+
+      form.appendChild(hiddenField);
+    }
+  }
+
+  document.body.appendChild(form);
+  form.submit();
+}
+
+
+function upload() {
+  var confJSON = $('#configuration-preview').val()
+  var configuration = JSON.parse(confJSON);
+
+  $.post('/api/configvalid', configuration, function (data, status, jQXHR) {
+    if (data) {
+      alert("data.valid" + data.valid);
+      if (data.valid) {
+        doPost('/settings', { configuration: confJSON });
+      } else {
+        reportValidity(data);
+      }
+    }
+  });
 }
 
 $(function() { //shorthand document.ready function 
@@ -104,7 +134,7 @@ function reportValidity(data) {
       $("#validation-errors .modal-body").append($('<p>' + error + '</p>'));
     });
 
-    var warning = '<p class="text-warning"><small>You can\'t save an'
+    var warning = '<p class="text-warning"><small>You can\'t save an '
       + 'incorrect configuration.</small></p>';
     $("#validation-errors .modal-body").append($(warning));
     $('#validation-errors').modal('show');
@@ -140,7 +170,7 @@ function formatFields(data) {
 
   switch (whichBwSource.get()) {
     case 'url':
-      config.bigWigConfig.folder = formOptions.bwurl;
+      config.bigWigConfig.url = formOptions.bwurl;
       break;
     case 'folder':
       config.bigWigConfig.folder = formOptions.bwdir;
