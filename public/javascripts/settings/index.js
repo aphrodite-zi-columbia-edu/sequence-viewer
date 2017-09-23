@@ -99,7 +99,7 @@ function preview(novalidate) {
     // if (!value) return null; return value;
     // if (!value) return console.log(value), null; return value;
     if (typeof value === 'undefined') return "undefined";
-    if (!value && typeof value === 'boolean') return "false";
+    if (!value && typeof value === 'boolean') return false;
     if (!value) return null;
     return value;
   }, 2);

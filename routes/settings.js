@@ -49,13 +49,13 @@ function deserialize() {
   return {
     bwdir      : (config.bigWigConfig.folder || null),
     bwurl      : (config.bigWigConfig.url || null),
-    csvpath    : (config.sequenceConfig.csv && config.sequenceConfig.csv.path || null),
-    csvcolumn  : (config.sequenceConfig.csv && config.sequenceConfig.csv.column || null),
-    csvuseindex: (config.sequenceConfig.csv && config.sequenceConfig.csv.index || null),
-    dbname     : (config.sequenceConfig.mysql && config.sequenceConfig.mysql.name || null),
-    dbuser     : (config.sequenceConfig.mysql && config.sequenceConfig.mysql.user || null),
-    dbpass     : (config.sequenceConfig.mysql && config.sequenceConfig.mysql.pass || null),
-    dbhost     : (config.sequenceConfig.mysql && config.sequenceConfig.mysql.host || null)
+    csvpath    : (config.sequenceConfig.csv ? config.sequenceConfig.csv.path : null),
+    csvcolumn  : (config.sequenceConfig.csv ? config.sequenceConfig.csv.column : null),
+    csvuseindex: (config.sequenceConfig.csv ? config.sequenceConfig.csv.index : false),
+    dbname     : (config.sequenceConfig.mysql ? config.sequenceConfig.mysql.name : null),
+    dbuser     : (config.sequenceConfig.mysql ? config.sequenceConfig.mysql.user : null),
+    dbpass     : (config.sequenceConfig.mysql ? config.sequenceConfig.mysql.pass : null),
+    dbhost     : (config.sequenceConfig.mysql ? config.sequenceConfig.mysql.host : null)
   };
 }
 
