@@ -9,8 +9,8 @@ function makeWhichTab(tabs) {
   $(function () {
     for (var tabid in tabs) {
       $(tabid).on('click', function () {
-        // console.log
-        set(tabs[tabid].value);
+        var thisId = $(this).attr('id');
+        set(tabs['#' + thisId].value);
         return true;
       })
     }
