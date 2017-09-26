@@ -23,9 +23,11 @@
     "express-handlebars": "^3.0.0",
     "hbs": "~4.0.1",
     "homedir": "^0.6.0",
+    "jquery": "^2.2.4",
     "js-yaml": "^3.10.0",
     "morgan": "~1.8.1",
     "mv": "^2.1.1",
+    "rimraf": "^2.6.2",
     "serve-favicon": "~2.4.2"
   }
 }

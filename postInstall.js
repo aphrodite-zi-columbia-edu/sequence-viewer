@@ -2,6 +2,7 @@
 var path = require('path');
 
 var mv = require('mv');
+var rimraf = require('rimraf');
 var async = require('async');
 
 function pathInModules(packageName) {
@@ -11,6 +12,7 @@ function pathInModules(packageName) {
 var componentsLocation = path.join(__dirname, 'public', 'components');
 
 var packagesFromBower = [
+  'jquery',
   'bootstrap',
   'datatables.net',
   'datatables.net-bs',
@@ -19,8 +21,9 @@ var packagesFromBower = [
 
 var filesToMove = packagesFromBower.map(function (package) {
   return {
-    from: pathInModules(package),
-    to: componentsLocation
+    source: pathInModules(package),
+    dest:   path.join(componentsLocation, package),
+    name:   package
   };
 });
 
@@ -28,10 +31,28 @@ async.map(filesToMove, function (pair, done) {
   var source = pair.source;
   var dest   = pair.dest;
 
-  mv(source, dest, { mkdirp: true }, function (err) {
-    if (err) return done(err); return done();
-  });
+  (function movePackage() {
+    mv(source, dest, { mkdirp: true, clobber: true }, function (err) {
+      if (err) {
+        if (err.code === 'ENOENT') {
+          console.log("Package not found", pair.name, "but cont anyway.");
+          return done(null, pair);
+        }
+        if (err.code === 'ENOTEMPTY') {
+          return rimraf(dest, function (err) {
+            if (err) return done(err);
+
+            movePackage();
+          });
+        }
+        return done(err);
+      }
+
+      console.log("Package found", pair.name);
+      return done(null, pair);
+    });
+  })();
 }, function (err, results) {
   if (err) throw err;
-  console.log("done", results);
+  console.log("done");
 });
