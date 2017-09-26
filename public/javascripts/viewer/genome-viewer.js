@@ -137,7 +137,6 @@ gvUtil.tierConfig = function tierConfig(name, description) {
       : name,
     desc: description || '',
     bwgURI: bwURLBase + '/' + name, // TODO proper join
-    // bwgURI: bwURLBase + '/' + 'atac_Z5_n-icam.ends.bigWig', // TODO proper join
     // noDownsample: true,
     style: [{
       type: 'default',
