@@ -27,7 +27,9 @@ app.locals.title = 'Sequence Viewer';
 
 // uncomment after placing your favicon in /public
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+if (process.argv.slice(2).filter((s) => s.indexOf("-v") > -1 || s.indexOf("--verbose") > -1).length) {
 app.use(logger('dev'));
+}
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser(require('crypto').randomBytes(64).toString('hex')));

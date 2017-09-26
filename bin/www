@@ -87,4 +87,10 @@ function onListening() {
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
+  if (process.argv.slice(2).filter(
+    (s) => s.indexOf("-v") > -1 ||
+           s.indexOf("--verbose") > -1
+  ).length) {
+    console.log('Listening on ' + bind);
+  }
 }

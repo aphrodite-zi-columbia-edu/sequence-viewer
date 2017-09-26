@@ -18,30 +18,16 @@
     </div>
   </div>
 </div>
-<script>
-  $(function () {
-    // $('#validation-errors').modal('show');
-  });
-</script>
 <div class="container">
-  <h1>Settings</h1>
-  <script>
-      // $('#success-disappear').fadeOut();
-    // setTimeout(function() {
-    //   $('#success-disappear').fadeOut();
-
-    //   setTimeout(function() {
-    //     $('#success-disappear').remove();
-    //   }, 1000);
-
-    // }, 1000);
-  </script>
+  <div class="page-name" style="display:flex;justify-content:flex-start;align-items:flex-end;">
+    <h1>Settings</h1>
+    <h6><a href="/">home</a></h6>
+  </div>
 
   <div id="success-disappear" class="alert alert-success alert-dismissable fade start-faded-out">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
     <strong>Validation Success!</strong> Valid Configuration
   </div>
-
 
   <div class="row">
     <div class="col-md-9">
@@ -131,7 +117,7 @@
                 <div class="col-sm-offset-2 col-sm-10">
                   <div class="checkbox">
                     <label>
-                      <input name="csvuseindex" type="checkbox" {{#if previous.csvuseindex}}value="on" {{/if}}/>
+                      <input name="csvuseindex" type="checkbox" {{#if previous.csvuseindex}}checked {{/if}}/>
                       CSV has headers (else use col. number)
                     </label>
                   </div>

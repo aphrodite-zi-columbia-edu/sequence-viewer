@@ -1,0 +1,31 @@
+<div class="container">
+  <div class="page-name" style="display:flex;justify-content:flex-start;align-items:flex-end;">
+    <h1>Viewer</h1>
+    <h6><a href="/">home</a></h6>
+  </div>
+
+  <div class="row" id="collapsible">
+    <div class="col-md-12">
+
+      <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#table-container">
+        Collapse Experiment Table
+      </button>
+      <button type="button" class="btn btn-danger" id="empty-genome-browser">
+        Empty Browser
+      </button>
+
+      {{!-- <div id="table-container" class="collapse in" style="margin: 10px 0;"> --}}
+      <div id="table-container" class="collapse in" style="margin: 10px 0;">
+        <table id="example" class="display" cellspacing="0" width="100%">
+        </table>
+      </div><!-- /table-container -->
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <h1>Genome Viewer</h1>
+      {{!-- <div id="genome-viewer"></div> --}}
+      <div id="svgHolder" style="/*margin-left: 5%; margin-right: 5%;*/ border-width: 1px; border-style: solid; border-color: #ccc; border-radius: 4px; padding: 10px;"></div>
+    </div>
+  </div>
+</div>
