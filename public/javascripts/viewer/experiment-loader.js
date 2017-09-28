@@ -41,7 +41,11 @@ ExperimentLoader.prototype.toggle = function(firstColumnKey) {
   }
 
   getFileNames().forEach(function toggleFile(fileName) {
-    toggleFn(gvUtil.tierConfig(fileName));
+    try {
+      toggleFn(gvUtil.tierConfig(fileName));
+    } catch (e) {
+      console.log("Tried to remove tier not present", e);
+    }
   }.bind(this));
 };
 

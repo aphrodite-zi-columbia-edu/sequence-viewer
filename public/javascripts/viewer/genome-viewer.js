@@ -130,6 +130,21 @@ function determineURLBase() {
 }
 var bwURLBase = determineURLBase();
 
+function hashStringToColor(str) {
+  var hash = 5381;
+  for (var i = 0; i < str.length; i++) {
+    hash = ((hash << 5) + hash) + str.charCodeAt(i); /* hash * 33 + c */
+  }
+
+  var r = (hash & 0xFF0000) >> 16;
+  var g = (hash & 0x00FF00) >> 8;
+  var b = hash & 0x0000FF;
+
+  function hexChannel(c) { return c.toString(16).substr(-2); }
+
+  return "#" + [r, g, b].map(hexChannel).join('');
+}
+
 gvUtil.tierConfig = function tierConfig(name, description) {
   return {
     name: description
@@ -142,7 +157,7 @@ gvUtil.tierConfig = function tierConfig(name, description) {
       type: 'default',
       style: {
         glyph: 'HISTOGRAM',
-        BGCOLOR: 'rgb(166,71,71)',
+        BGCOLOR: hashStringToColor(name),
         HEIGHT: 100,
         id: 'style1'
       }
