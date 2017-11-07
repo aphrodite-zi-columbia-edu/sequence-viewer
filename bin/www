@@ -8,7 +8,9 @@ var parseDec = function (a) { return parseInt(a, 10); };
 var increaseVerbosity = function(val, total) { return total + 1; }
 
 program
-  .version(require('../package').version);
+  .version(require('../package').version)
+  .option('-v, --verbosity', 'Increase verbosity', increaseVerbosity, 0)
+  .action(function() {  console.log("it worked"); program.help(); });
 
 program.command('init')
   .description('Interactively initialize a configuration in this folder')
@@ -18,10 +20,9 @@ program.command('init')
 program.command('start')
   .option('-p, --port <port>', 'Specify a port', parseDec)
   .option('-d, --default-config <file>', 'Use a custom starter configuration')
-  .option('-v, --verbosity', 'Increase verbosity', increaseVerbosity, 0)
   .action(boot);
 
-program.parse(process.argv);
+program.parse(process.argv)
 
 if (process.argv.length === 2) {
   program.help();
