@@ -1,0 +1,36 @@
+name: Untitled Experiment Group
+description: No description provided (overlayed over mm10 genome tier and Gencode m11 gene annotation)
+baseTracks: # see http://www.biodalliance.org/config-source.html for details
+  - name: Genome
+    tier_type: sequence
+    twoBitURI: '//www.biodalliance.org/datasets/GRCm38/mm10.2bit'
+  - name: 'GENCODE version M11'
+    bwgURI: 'http://ngs.sanger.ac.uk/production/gencode/trackhub/data/gencode.vM11.annotation.bb'
+    stylesheet_uri: 'http://www.biodalliance.org/stylesheets/gencode.xml'
+    collapseSuperGroups: true
+    trixURI: 'http://ngs.sanger.ac.uk/production/gencode/trackhub/data/gencode.vM11.annotation.ix'
+    noSourceFeatureInfo: true
+    featureInfoPlugin: !<tag:yaml.org,2002:js/function> |-
+      function gencodeFIP(feature, info) {
+        var isGene = false;
+        (info.hit || []).forEach(function (hit) {
+          if (hit.isSuperGroup) isGene = true;
+        });
+
+        if (!isGene) {
+          info.setTitle('Transcript: ' + feature.label);
+          info.add('Transcript ID', feature.label);
+          info.add('Transcript biotype', feature.method);
+
+        } else {
+          info.setTitle('Gene: ' + feature.geneId);
+        }
+
+        info.add('Gene ID', feature.geneId);
+        info.add('Gene name', feature.geneName);
+        info.add('Gene biotype', feature.geneBioType);
+
+        if (!isGene) {
+          info.add('Transcript attributes', feature.tags);
+        }
+      }
