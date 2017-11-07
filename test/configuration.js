@@ -6,16 +6,19 @@ require('chai').use(require('chai-shallow-deep-equal'));
 var tmp = require('tmp');
 var yaml = require('js-yaml');
 var util = require('../lib/util');
-var csv = { stringify: require('csv-stringify') };
+var csv = {
+  stringify: require('csv-stringify'),
+  parse: require('csv-parse')
+};
+
+var logger = require('log4js').getLogger('\t');
+logger.level = 'debug';
 
 var configuration = require('../lib/boot/configuration');
 var _compileDefaultConfiguration = configuration._compileDefaultConfiguration;
 
 describe('reading in configuration files', function () {
   it('should test overlaying two settings', function () {
-    var logger = require('log4js').getLogger('\t');
-    logger.level = 1000;
-
     // input
     var defaultC = { name: 'ok', baseTracks: [] };
     var userC = { name: 'noway', filesConfig : {} };
@@ -42,9 +45,6 @@ describe('reading in configuration files', function () {
   });
 
   it('should test overlaying one settings', function () {
-    var logger = require('log4js').getLogger('\t');
-    logger.level = 1000;
-
     // input
     var defaultC = { name: 'ok', baseTracks: [] };
     var userC = { name: 'noway', filesConfig : {} };
@@ -72,9 +72,6 @@ describe('reading in configuration files', function () {
   });
 
   it.skip('should throw if no default configuration found', function () {
-    var logger = require('log4js').getLogger('\t');
-    logger.level = 1000;
-
     var defaultDir = tmp.dirSync({ unsafeCleanup: true });
     var userDir = tmp.dirSync({ unsafeCleanup: true });
 
@@ -92,8 +89,6 @@ describe('reading in configuration files', function () {
 
 describe('validating configuration files', function () {
   it('should verify contents of default file', function () {
-    // var logger = require('log4js').getLogger('\t');
-    // logger.level = 'debug';
     var c = configuration.compileDefaultConfiguration();
 
     var expected = {
@@ -145,7 +140,6 @@ describe('validating configuration files', function () {
     it('should not be usable with incomplete defaults', function (done) {
       var c = configuration.compileDefaultConfiguration();
 
-
       var config = new configuration.Configuration(c, null, true);
       config.usable(function (usable) {
         expect(usable).to.be.false;
@@ -154,9 +148,6 @@ describe('validating configuration files', function () {
     });
 
     it('should be usable with csv + existing folder', function (done) {
-      var logger = require('log4js').getLogger('\t');
-      logger.level = 1000;
-      
       var c = configuration.compileDefaultConfiguration();
       var tmpCwd = tmp.dirSync({ unsafeCleanup: true });
       var tmpFilesFolder = tmp.dirSync({ unsafeCleanup: true });
@@ -192,8 +183,7 @@ describe('validating configuration files', function () {
 
         var config = new configuration.Configuration(c, null, true);
         config.usable(function (usable) {
-          console.log("result is <", usable, ">");
-
+          expect(usable).to.be.true;
 
           tmpCwd.removeCallback();
           tmpFilesFolder.removeCallback();
@@ -203,23 +193,20 @@ describe('validating configuration files', function () {
     });
 
 
-    it('should test csv without headers', function (done) {
-      var logger = require('log4js').getLogger('\t');
-      logger.level = 1000;
-      
+    it('should test csv without headers (look in col number)', function (done) {      
       var c = configuration.compileDefaultConfiguration();
       var tmpCwd = tmp.dirSync({ unsafeCleanup: true });
       var tmpFilesFolder = tmp.dirSync({ unsafeCleanup: true });
 
+      /*
+       * Use this data to create a file
+       */
       var sampleExperiments = [
-        [ 'files',         'other_column' ],
-        [ 'afile,twofile', 'yup.' ],
-        [ 'just one here', 'row2' ]
+        { files: 'afile,twofile', other_column: 'yup.' },
+        { files: 'just one here', other_column: 'row2' }
       ];
 
-      csv.stringify(sampleExperiments, {
-        header: true,
-      }, function (err, csvString) {
+      csv.stringify(sampleExperiments, function (err, csvString) {
         try {
           fs.writeFileSync(path.join(tmpCwd.name, '.sv.csv'), csvString);
         } catch (e) {
@@ -227,28 +214,51 @@ describe('validating configuration files', function () {
         }
 
         var settings = {
-          filesField: 'files',
+          filesField: '0',
           experimentsSource: {
             experimentsSourceType: 'csv',
             fileName: tmpCwd.name,
-            hasHeaders: true
+            hasHeaders: false
           },
           filesSource: {
             filesSourceType: 'folder',
             folder: tmpFilesFolder.name
           }
-        }
+        };
 
         c = Object.assign(c, settings);
 
         var config = new configuration.Configuration(c, null, true);
         config.usable(function (usable) {
-          console.log("result is <", usable, ">");
+          expect(usable).to.be.true;
 
+          /***
+           * NOW TEST AN INDEX OUT OF THE RANGE
+           */
 
-          tmpCwd.removeCallback();
-          tmpFilesFolder.removeCallback();
-          done();
+          var settings = {
+            filesField: '3',
+            experimentsSource: {
+              experimentsSourceType: 'csv',
+              fileName: tmpCwd.name,
+              hasHeaders: false
+            },
+            filesSource: {
+              filesSourceType: 'folder',
+              folder: tmpFilesFolder.name
+            }
+          };
+
+          c = Object.assign(c, settings);
+
+          var config = new configuration.Configuration(c, null, true);
+          config.usable(function (usable) {
+            expect(usable).to.be.false;
+            
+            tmpCwd.removeCallback();
+            tmpFilesFolder.removeCallback();
+            done();
+          });
         });
       });
     });
