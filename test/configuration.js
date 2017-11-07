@@ -264,3 +264,12 @@ describe('validating configuration files', function () {
     });
   });
 });
+
+// describe.only('syncing Configuration objects', function () {
+//   it('should sync configuration file', function (done) {
+//     var curDir = tmp.dirSync({ unsafeCleanup: true });
+
+//     var c = configuration.compileDefaultConfiguration();
+//     var config = new configuration.Configuration(c, curDir.name, false);
+//   });
+// });
